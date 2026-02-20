@@ -11,14 +11,14 @@ export default function LoginHero() {
         <div className="hidden lg:block">
             <div className="text-center space-y-6">
                 <Image className="w-full h-96 object-cover rounded-2xl shadow-lg"
-                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/2e5810ff3e-e75061ebcd4ae5.png"
-                  alt="fresh vegetables and fruits shopping cart illustration, modern clean style, green"
+                  src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800"
+                  alt="Fresh vegetables and fruits for grocery shopping"
                   width={600}
                   height={400} />
 
                 <div className="space-y-4">
                     <h2 className="text-3xl font-bold text-gray-800">
-                        FreshCart - Ypur One-Stop Shop for Fresh Products
+                        FreshCart - Your One-Stop Shop for Fresh Products
                     </h2>
                     <p className="text-lg text-gray-600">
                         Join thousands of happy customers who trust FreshCart for their 
