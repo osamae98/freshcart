@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import type { Metadata } from "next";
 import "../styles/globals.css";
 
 import Navbar from "@/components/shared/Navbar";
@@ -9,6 +10,13 @@ import Providers from "@/components/providers/Providers";
 import { verifyToken } from "@/features/auth/server/auth.actions";
 import { getInitialCart } from "@/features/cart/server/cart.actions";
 import { getInitialWishlist } from "@/features/wishlist/server/wishlist.actions";
+
+export const metadata: Metadata = {
+  title: "FreshCart",
+  icons: {
+    icon: "/favicon.png",
+  },
+};
 
 const exo = Exo({
   subsets: ["latin"],
