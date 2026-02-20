@@ -40,16 +40,21 @@ export default function SignupForm() {
                 setTimeout(() => {
                     router.push("/login");
                 }, 2000);
-            } else {
+            } else if (response) {
                 if (response?.errors) {
-                    Object.keys(response.errors).forEach((key) => { // <-- was `errors` (form errors), should be `response.errors`
+                    Object.keys(response.errors).forEach((key) => {
                         const message = response.errors[key];
                         setError(key as keyof SignupFormValues, { message });
                     });
                 }
+                if (response?.message && response.message !== "validation errors") {
+                    toast.error(response.message);
+                }
+            } else {
+                toast.error("Something went wrong. Please try again.");
             }
-        } catch (error) {
-            console.error("Signup failed:", error);
+        } catch {
+            toast.error("An unexpected error occurred. Please try again.");
         }
     };
     return (

@@ -15,36 +15,32 @@ export function useWishlist() {
 
     const fetchWishlist = async () => {
         dispatch(setWishlistLoading(true));
-        try {
-            const response = await getLoggedUserWishlist();
-            dispatch(setWishlist(response.data));
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to fetch wishlist';
-            dispatch(setWishlistError(errorMessage));
-        } finally {
-            dispatch(setWishlistLoading(false));
+        const result = await getLoggedUserWishlist();
+        if (result.success) {
+            dispatch(setWishlist(result.data.data));
+        } else {
+            dispatch(setWishlistError(result.message));
         }
+        dispatch(setWishlistLoading(false));
     };
 
     const addToWishlist = async (productId: string) => {
-        try {
-            await addAction({ productId });
+        const result = await addAction({ productId });
+        if (result.success) {
             await fetchWishlist();
             toast.success('Added to wishlist');
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to add to wishlist';
-            toast.error(errorMessage);
+        } else {
+            toast.error(result.message);
         }
     };
 
     const removeFromWishlist = async (productId: string) => {
-        try {
-            await removeAction({ productId });
+        const result = await removeAction({ productId });
+        if (result.success) {
             await fetchWishlist();
             toast.success('Removed from wishlist');
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to remove from wishlist';
-            toast.error(errorMessage);
+        } else {
+            toast.error(result.message);
         }
     };
 

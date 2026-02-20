@@ -17,58 +17,52 @@ export function useCart() {
 
     const fetchCart = async () => {
         dispatch(setLoading(true));
-        try {
-            const response = await getLoggedUserCart();
-            dispatch(setCart(response.data));
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to fetch cart';
-            dispatch(setError(errorMessage));
-        } finally {
-            dispatch(setLoading(false));
+        const result = await getLoggedUserCart();
+        if (result.success) {
+            dispatch(setCart(result.data.data));
+        } else {
+            dispatch(setError(result.message));
         }
+        dispatch(setLoading(false));
     };
 
     const addToCart = async (productId: string) => {
-        try {
-            await addAction({ productId });
+        const result = await addAction({ productId });
+        if (result.success) {
             await fetchCart();
             toast.success('Product added to cart');
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to add product to cart';
-            toast.error(errorMessage);
+        } else {
+            toast.error(result.message);
         }
     };
 
     const updateQuantity = async (productId: string, count: number) => {
-        try {
-            await updateQtyAction({ productId, count });
+        const result = await updateQtyAction({ productId, count });
+        if (result.success) {
             await fetchCart();
             toast.success('Quantity updated');
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to update quantity';
-            toast.error(errorMessage);
+        } else {
+            toast.error(result.message);
         }
     };
 
     const removeFromCart = async (productId: string) => {
-        try {
-            await removeAction({ productId });
+        const result = await removeAction({ productId });
+        if (result.success) {
             await fetchCart();
             toast.success('Item removed from cart');
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to remove item';
-            toast.error(errorMessage);
+        } else {
+            toast.error(result.message);
         }
     };
 
     const clearCart = async () => {
-        try {
-            await clearAction();
-            fetchCart();
+        const result = await clearAction();
+        if (result.success) {
+            await fetchCart();
             toast.success('Cart cleared');
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : 'Failed to clear cart';
-            toast.error(errorMessage);
+        } else {
+            toast.error(result.message);
         }
     };
 

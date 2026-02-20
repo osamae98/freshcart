@@ -6,9 +6,11 @@ import { CartResponse, Cart } from '../types/Cart.types';
 
 const BASE_URL = 'https://ecommerce.routemisr.com/api/v1/cart';
 
-export async function getLoggedUserCart(): Promise<CartResponse> {
+type ActionResult<T> = { success: true; data: T } | { success: false; message: string };
+
+export async function getLoggedUserCart(): Promise<ActionResult<CartResponse>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login to view your cart' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -18,16 +20,15 @@ export async function getLoggedUserCart(): Promise<CartResponse> {
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error fetching cart:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to fetch cart' };
     }
 }
 
-export async function updateProductQuantity({ productId, count }: { productId: string; count: number }): Promise<CartResponse> {
+export async function updateProductQuantity({ productId, count }: { productId: string; count: number }): Promise<ActionResult<CartResponse>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login first' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -38,16 +39,15 @@ export async function updateProductQuantity({ productId, count }: { productId: s
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error updating product quantity:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to update quantity' };
     }
 }
 
-export async function removeProductFromCart({ productId }: { productId: string }): Promise<CartResponse> {
+export async function removeProductFromCart({ productId }: { productId: string }): Promise<ActionResult<CartResponse>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login first' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -57,16 +57,15 @@ export async function removeProductFromCart({ productId }: { productId: string }
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error removing product from cart:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to remove item from cart' };
     }
 }
 
-export async function clearUserCart(): Promise<{ status: string; message: string }> {
+export async function clearUserCart(): Promise<ActionResult<{ status: string; message: string }>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login first' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -76,16 +75,15 @@ export async function clearUserCart(): Promise<{ status: string; message: string
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error clearing cart:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to clear cart' };
     }
 }
 
-export async function addProductToCart({ productId }: { productId: string }): Promise<CartResponse> {
+export async function addProductToCart({ productId }: { productId: string }): Promise<ActionResult<CartResponse>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login to add items to cart' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -96,10 +94,9 @@ export async function addProductToCart({ productId }: { productId: string }): Pr
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error adding product to cart:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to add product to cart' };
     }
 }
 

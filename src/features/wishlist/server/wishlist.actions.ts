@@ -6,9 +6,11 @@ import { WishlistResponse, WishlistToggleResponse, WishlistProduct } from '../ty
 
 const BASE_URL = 'https://ecommerce.routemisr.com/api/v1/wishlist';
 
-export async function getLoggedUserWishlist(): Promise<WishlistResponse> {
+type ActionResult<T> = { success: true; data: T } | { success: false; message: string };
+
+export async function getLoggedUserWishlist(): Promise<ActionResult<WishlistResponse>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login to view your wishlist' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -18,16 +20,15 @@ export async function getLoggedUserWishlist(): Promise<WishlistResponse> {
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error fetching wishlist:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to fetch wishlist' };
     }
 }
 
-export async function addProductToWishlist({ productId }: { productId: string }): Promise<WishlistToggleResponse> {
+export async function addProductToWishlist({ productId }: { productId: string }): Promise<ActionResult<WishlistToggleResponse>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login to add items to wishlist' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -38,16 +39,15 @@ export async function addProductToWishlist({ productId }: { productId: string })
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error adding to wishlist:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to add to wishlist' };
     }
 }
 
-export async function removeProductFromWishlist({ productId }: { productId: string }): Promise<WishlistToggleResponse> {
+export async function removeProductFromWishlist({ productId }: { productId: string }): Promise<ActionResult<WishlistToggleResponse>> {
     const token = await getToken();
-    if (!token) throw new Error('Unauthorized');
+    if (!token) return { success: false, message: 'Please login first' };
 
     try {
         const options: AxiosRequestConfig = {
@@ -57,10 +57,9 @@ export async function removeProductFromWishlist({ productId }: { productId: stri
         };
 
         const { data } = await axios.request(options);
-        return data;
-    } catch (error) {
-        console.error('Error removing from wishlist:', error);
-        throw error;
+        return { success: true, data };
+    } catch {
+        return { success: false, message: 'Failed to remove from wishlist' };
     }
 }
 

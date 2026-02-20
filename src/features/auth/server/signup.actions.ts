@@ -1,6 +1,6 @@
 'use server';
 import { SignupFormValues, signupSchema } from "../schemas/signup.schemas";
-import axios, { Axios, AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 export default async function signupAction(values:SignupFormValues) {
     const validationResult = signupSchema.safeParse(values)
@@ -27,6 +27,7 @@ export default async function signupAction(values:SignupFormValues) {
     
 }
 
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
    const {terms, ...requestBody} = values;
 
    try {
@@ -60,10 +61,16 @@ export default async function signupAction(values:SignupFormValues) {
                 errors: {
                     email: 'an account with this email already exists'
                 }
+            }
         }
-   }
-}
-
-   
+        return {
+            success: false,
+            message: errorMessage || "Signup failed. Please try again.",
+        }
+    }
+    return {
+        success: false,
+        message: "An unexpected error occurred. Please try again.",
+    }
 }
 }
