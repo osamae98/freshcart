@@ -1,8 +1,25 @@
 import ProductCard from "@/features/products/components/ProductCard";
 import { getProducts } from "@/features/products/server/products.actions";
+import { Product } from "@/features/products/types/Products.types";
 
 export default async function FeaturedPage() {
-    const response = await getProducts();
+    let products: Product[] = [];
+    try {
+        const response = await getProducts();
+        products = response.data;
+    } catch {
+        // API temporarily unavailable
+    }
+
+    if (products.length === 0) {
+        return (
+            <section className="py-10">
+                <div className="container mx-auto text-center py-20">
+                    <p className="text-gray-400 text-lg">Products are temporarily unavailable. Please try again later.</p>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="py-10">
@@ -13,7 +30,7 @@ export default async function FeaturedPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     {
-                        response.data.map((product) => (
+                        products.map((product) => (
                             <ProductCard key={product._id} info={product} />
                         ))
                     }

@@ -36,29 +36,28 @@ export default async function SearchResultsScreen({ searchParams }: SearchResult
     limit: 12,
   };
 
-  const [productsResponse, categoriesResponse, brandsResponse, allProductsResponse] = await Promise.all([
+  const [productsResult, categoriesResult, brandsResult, allProductsResult] = await Promise.allSettled([
     getProducts(params),
     getAllCategories(),
-    getAllBrands(1, 100), // Get enough brands for filtering
-    getProducts({ limit: 6 }) // For recently viewed demo or fallback
+    getAllBrands(1, 100),
+    getProducts({ limit: 6 })
   ]);
 
-  const products = productsResponse.data;
-  const categories = categoriesResponse.data;
-  const brands = brandsResponse.data;
-  
-  // Note: For a real app, recently viewed would come from local storage or user history API
-  const recentlyViewedProducts = allProductsResponse.data; 
+  const products = productsResult.status === 'fulfilled' ? productsResult.value.data : [];
+  const categories = categoriesResult.status === 'fulfilled' ? categoriesResult.value.data : [];
+  const brands = brandsResult.status === 'fulfilled' ? brandsResult.value.data : [];
+  const recentlyViewedProducts = allProductsResult.status === 'fulfilled' ? allProductsResult.value.data : [];
 
-  const currentPage = productsResponse.metaData?.currentPage || 1;
-  const totalPages = productsResponse.metaData?.numberOfPages || 1;
+  const totalResults = productsResult.status === 'fulfilled' ? productsResult.value.results || 0 : 0;
+  const currentPage = productsResult.status === 'fulfilled' ? productsResult.value.metaData?.currentPage || 1 : 1;
+  const totalPages = productsResult.status === 'fulfilled' ? productsResult.value.metaData?.numberOfPages || 1 : 1;
 
   const isGrid = searchParams.view !== "list";
 
   return (
     <div className="container py-8 sm:py-12">
       <SearchResultsHeader 
-        totalResults={productsResponse.results || 0} 
+        totalResults={totalResults} 
         keyword={searchParams.keyword || ""} 
       />
 

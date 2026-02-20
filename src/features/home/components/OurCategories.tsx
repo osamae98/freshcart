@@ -1,4 +1,5 @@
 import { getAllCategories } from "@/features/categories/server/categories.actions";
+import { Category } from "@/features/categories/types/Category.types";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -6,7 +7,15 @@ import Image from "next/image";
 
 
 export default async function OurCategories() {
-    const response = await getAllCategories();
+    let categories: Category[] = [];
+    try {
+        const response = await getAllCategories();
+        categories = response.data;
+    } catch {
+        // API temporarily unavailable
+    }
+
+    if (categories.length === 0) return null;
 
     return <>
     <section id="categories" className="py-10">
@@ -27,7 +36,7 @@ export default async function OurCategories() {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {response?.data.map((category) => (
+                    {categories.map((category) => (
                         <Link 
                            href={`/categories/${category._id}`}
                            key={category._id}

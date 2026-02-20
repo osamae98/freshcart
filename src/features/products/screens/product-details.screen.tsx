@@ -6,21 +6,42 @@ import ProductCard from "../components/ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import Link from "next/link";
+import { Product } from "../types/Products.types";
 
 export default async function ProductDetailsScreen({productId}: {productId: string}) {
-    const [productResponse, allProductsResponse] = await Promise.all([
-        getProductById({id: productId}),
-        getProducts()
-    ]);
+    let product: Product | null = null;
+    let relatedProducts: Product[] = [];
+    let recentlyViewed: Product[] = [];
 
-    const product = productResponse.data;
-    const relatedProducts = allProductsResponse.data
-        .filter(p => p.category._id === product.category._id && p._id !== product._id)
-        .slice(0, 4);
+    try {
+        const [productResponse, allProductsResponse] = await Promise.all([
+            getProductById({id: productId}),
+            getProducts()
+        ]);
 
-    const recentlyViewed = allProductsResponse.data
-        .filter(p => p._id !== product._id)
-        .slice(0, 6);
+        product = productResponse.data;
+        relatedProducts = allProductsResponse.data
+            .filter(p => p.category._id === product!.category._id && p._id !== product!._id)
+            .slice(0, 4);
+        recentlyViewed = allProductsResponse.data
+            .filter(p => p._id !== product!._id)
+            .slice(0, 6);
+    } catch {
+        // API failed
+    }
+
+    if (!product) {
+        return (
+            <div className="container py-20 text-center">
+                <h1 className="text-2xl font-bold text-gray-900 mb-4">Product not available</h1>
+                <p className="text-gray-500 mb-8">This product could not be loaded right now. Please try again later.</p>
+                <Link href="/" className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-xl transition-all">
+                    Back to Home
+                </Link>
+            </div>
+        );
+    }
 
     return (
         <div className="container py-8 sm:py-12">
