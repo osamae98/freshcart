@@ -1,4 +1,3 @@
-import PromoBanners from "../components/PromoBanner";
 import Slider from "../components/Slider";
 import OurCategories from "../components/OurCategories";
 import DealsBanner from "../components/DealsBanner";
@@ -18,7 +17,6 @@ export default function HomeScreen() {
             {/* Rest of content inside container */}
             <div className="container space-y-12 py-8">
                 <OurCategories/>
-                <PromoBanners/>
                 <DealsBanner/>
                 <FeaturedProducts/>
                 <NewsLetter/>
