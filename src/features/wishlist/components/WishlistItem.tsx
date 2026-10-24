@@ -69,10 +69,10 @@ export default function WishlistItem({ item, onRemove }: WishlistItemProps) {
             {/* Price */}
             <div className="text-center sm:text-right flex-shrink-0 sm:min-w-[80px]">
                 <div className="text-lg font-bold text-primary-600">
-                    ${item.priceAfterDiscount || item.price}
+                    {item.priceAfterDiscount || item.price} EGP
                 </div>
                 {item.priceAfterDiscount && item.priceAfterDiscount < item.price && (
-                    <div className="text-xs text-gray-400 line-through">${item.price}</div>
+                    <div className="text-xs text-gray-400 line-through">{item.price} EGP</div>
                 )}
             </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faUndo, faShieldAlt } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faUndo, faShieldAlt, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import Image from "next/image";
 import { CartItem } from "../../cart/types/Cart.types";
@@ -13,15 +13,19 @@ interface OrderSummaryProps {
     discount: number;
     tax: number;
     onProceed: () => void;
+    isProcessing?: boolean;
+    paymentMethod?: 'cod' | 'online';
 }
 
-export default function OrderSummary({ 
-    items, 
-    subtotal, 
-    shipping, 
-    discount, 
+export default function OrderSummary({
+    items,
+    subtotal,
+    shipping,
+    discount,
     tax,
-    onProceed 
+    onProceed,
+    isProcessing = false,
+    paymentMethod = 'online'
 }: OrderSummaryProps) {
     const total = subtotal + shipping - discount + tax;
 
@@ -47,7 +51,7 @@ export default function OrderSummary({
                                 <p className="text-xs text-gray-500">Qty: {item.count}</p>
                             </div>
                             <div className="text-sm font-bold text-gray-900">
-                                ${item.price.toFixed(2)}
+                                {item.price.toFixed(2)} EGP
                             </div>
                         </div>
                     ))}
@@ -57,34 +61,44 @@ export default function OrderSummary({
                 <div className="space-y-4 pt-6 border-t border-gray-50">
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500">Subtotal</span>
-                        <span className="font-bold text-gray-900">${subtotal.toFixed(2)}</span>
+                        <span className="font-bold text-gray-900">{subtotal.toFixed(2)} EGP</span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500">Discount</span>
-                        <span className="font-bold text-red-500">-${discount.toFixed(2)}</span>
+                        <span className="font-bold text-red-500">-{discount.toFixed(2)} EGP</span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500">Delivery</span>
-                        <span className="font-bold text-gray-900">${shipping.toFixed(2)}</span>
+                        <span className="font-bold text-gray-900">{shipping.toFixed(2)} EGP</span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500">Tax</span>
-                        <span className="font-bold text-gray-900">${tax.toFixed(2)}</span>
+                        <span className="font-bold text-gray-900">{tax.toFixed(2)} EGP</span>
                     </div>
                     
                     <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
                         <span className="text-lg font-bold text-gray-900">Total</span>
-                        <span className="text-2xl font-black text-primary-600">${total.toFixed(2)}</span>
+                        <span className="text-2xl font-black text-primary-600">{total.toFixed(2)} EGP</span>
                     </div>
                 </div>
 
                 <div className="mt-8 space-y-3">
                     <button 
                         onClick={onProceed}
-                        className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary-600/20 active:scale-[0.98]"
+                        disabled={isProcessing}
+                        className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary-600/20 active:scale-[0.98] disabled:bg-gray-400 disabled:shadow-none disabled:cursor-not-allowed"
                     >
-                        Proceed to Payment
-                        <FontAwesomeIcon icon={faArrowRight} size="sm" />
+                        {isProcessing ? (
+                            <>
+                                <FontAwesomeIcon icon={faSpinner} spin size="sm" />
+                                Processing...
+                            </>
+                        ) : (
+                            <>
+                                {paymentMethod === 'cod' ? 'Place Order' : 'Proceed to Payment'}
+                                <FontAwesomeIcon icon={faArrowRight} size="sm" />
+                            </>
+                        )}
                     </button>
                     <Link 
                         href="/cart"

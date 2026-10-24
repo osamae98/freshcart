@@ -67,11 +67,11 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 
       <div className="flex items-center gap-4">
         <span className="text-4xl font-bold text-primary-600">
-          ${product.priceAfterDiscount || product.price}
+          {product.priceAfterDiscount || product.price} EGP
         </span>
         {product.priceAfterDiscount && (
           <>
-            <span className="text-xl text-gray-400 line-through">${product.price}</span>
+            <span className="text-xl text-gray-400 line-through">{product.price} EGP</span>
             <span className="px-2 py-0.5 text-xs font-bold text-red-500 bg-red-50 rounded">
               Save {discountPercentage}%
             </span>
@@ -150,7 +150,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           </div>
           <div>
             <span className="block text-sm font-bold text-gray-900">Free Delivery</span>
-            <span className="block text-xs text-gray-500">Free shipping on orders over $50</span>
+            <span className="block text-xs text-gray-500">Free shipping on orders over 500 EGP</span>
           </div>
         </div>
         <div className="flex items-center gap-3">

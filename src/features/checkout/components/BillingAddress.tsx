@@ -7,6 +7,7 @@ interface BillingAddressProps {
         address: string;
         city: string;
         zipCode: string;
+        phone: string;
     };
     onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     sameAsDelivery: boolean;
@@ -96,6 +97,18 @@ export default function BillingAddress({
                         type="text"
                         placeholder="12345"
                         value={formData.zipCode}
+                        onChange={onInputChange}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all placeholder:text-gray-300"
+                    />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                    <label className="text-sm font-bold text-gray-700" htmlFor="phone">Phone Number</label>
+                    <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="e.g. 01012345678"
+                        value={formData.phone}
                         onChange={onInputChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all placeholder:text-gray-300"
                     />

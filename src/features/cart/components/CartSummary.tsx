@@ -22,7 +22,7 @@ export default function CartSummary({ subtotal, shipping, discount, tax }: CartS
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
                         <span className="text-gray-500">Subtotal</span>
-                        <span className="font-bold text-gray-900">${subtotal.toFixed(2)}</span>
+                        <span className="font-bold text-gray-900">{subtotal.toFixed(2)} EGP</span>
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="text-gray-500">Shipping</span>
@@ -31,17 +31,17 @@ export default function CartSummary({ subtotal, shipping, discount, tax }: CartS
                     {discount > 0 && (
                         <div className="flex justify-between items-center">
                             <span className="text-gray-500">Discount</span>
-                            <span className="font-bold text-red-500">-${discount.toFixed(2)}</span>
+                            <span className="font-bold text-red-500">-{discount.toFixed(2)} EGP</span>
                         </div>
                     )}
                     <div className="flex justify-between items-center">
                         <span className="text-gray-500">Tax</span>
-                        <span className="font-bold text-gray-900">${tax.toFixed(2)}</span>
+                        <span className="font-bold text-gray-900">{tax.toFixed(2)} EGP</span>
                     </div>
                     
                     <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
                         <span className="text-lg font-bold text-gray-900">Total</span>
-                        <span className="text-2xl font-black text-primary-600">${total.toFixed(2)}</span>
+                        <span className="text-2xl font-black text-primary-600">{total.toFixed(2)} EGP</span>
                     </div>
                 </div>
 

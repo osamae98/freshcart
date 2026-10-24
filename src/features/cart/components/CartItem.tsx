@@ -40,7 +40,9 @@ export default function CartItem({ item, onUpdateQuantity, onRemove }: CartItemP
                 <div className="flex items-center justify-center sm:justify-start gap-2">
                     <Ratings rating={product.ratingsAverage || 0} />
                     <span className="text-xs text-gray-400">
-                        {product.ratingsAverage || 0} ({product.ratingsQuantity || 0})
+                        {product.ratingsAverage || 0}
+                        {/* The cart API omits ratingsQuantity, so only show it when present */}
+                        {product.ratingsQuantity !== undefined && ` (${product.ratingsQuantity} reviews)`}
                     </span>
                 </div>
             </div>
@@ -66,9 +68,9 @@ export default function CartItem({ item, onUpdateQuantity, onRemove }: CartItemP
             {/* Price & Actions */}
             <div className="flex items-center gap-6">
                 <div className="text-right">
-                    <div className="text-xl font-bold text-primary-600">${(price * count).toFixed(2)}</div>
+                    <div className="text-xl font-bold text-primary-600">{(price * count).toFixed(2)} EGP</div>
                     {product.price > price && (
-                        <div className="text-sm text-gray-400 line-through">${(product.price * count).toFixed(2)}</div>
+                        <div className="text-sm text-gray-400 line-through">{(product.price * count).toFixed(2)} EGP</div>
                     )}
                 </div>
                 <button

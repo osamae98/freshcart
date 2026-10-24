@@ -33,7 +33,7 @@ export default function CouponSection() {
                         <FontAwesomeIcon icon={faTag} size="sm" />
                         <span className="text-sm font-bold">{appliedCoupon} Applied</span>
                     </div>
-                    <span className="text-sm font-bold text-green-700">-$3.25</span>
+                    <span className="text-sm font-bold text-green-700">-3.25 EGP</span>
                 </div>
             )}
         </div>

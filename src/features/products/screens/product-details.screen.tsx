@@ -97,7 +97,7 @@ export default async function ProductDetailsScreen({productId}: {productId: stri
                             <h3 className="text-sm font-semibold text-gray-900 line-clamp-1 group-hover:text-primary-600 transition-colors">
                                 {item.title}
                             </h3>
-                            <span className="text-sm font-bold text-gray-500">${item.price}</span>
+                            <span className="text-sm font-bold text-gray-500">{item.price} EGP</span>
                         </div>
                     ))}
                 </div>

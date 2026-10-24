@@ -81,22 +81,22 @@ export default function SearchFilters({ categories, brands }: SearchFiltersProps
         <h3 className="text-lg font-bold text-gray-900 mb-4">Price Range</h3>
         <div className="flex items-center space-x-2">
           <div className="relative flex-1">
-             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">EGP</span>
              <input
                 type="number"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
-                className="w-full pl-6 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="w-full pl-10 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500"
              />
           </div>
           <span className="text-gray-400">to</span>
           <div className="relative flex-1">
-             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">EGP</span>
              <input
                 type="number"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
-                className="w-full pl-6 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="w-full pl-10 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-500"
              />
           </div>
         </div>

@@ -1,8 +1,9 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSync, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faCreditCard, faMoneyBillWave, faSync } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import Link from "next/link";
 import { Order } from "../types/Orders.types";
 
 interface OrderCardProps {
@@ -23,6 +24,9 @@ export default function OrderCard({ order }: OrderCardProps) {
         }
     };
 
+    const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
+    const firstProductId = order.items.find((item) => item.productId)?.productId;
+
     return (
         <div className="bg-white border border-gray-100 rounded-2xl p-6 transition-shadow hover:shadow-md">
             {/* Header */}
@@ -36,16 +40,17 @@ export default function OrderCard({ order }: OrderCardProps) {
                     </div>
                     <p className="text-sm text-gray-500">Placed on {order.date}</p>
                 </div>
-                <div className="flex items-center gap-6">
-                    <button className="flex items-center gap-2 text-primary-600 hover:text-primary-700 text-sm font-semibold transition-colors">
-                        <FontAwesomeIcon icon={faSync} className="w-3" />
-                        Reorder
-                    </button>
-                    <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors">
-                        <FontAwesomeIcon icon={faEye} className="w-4" />
-                        View Details
-                    </button>
-                </div>
+                {order.paymentMethod && (
+                    <div className="flex items-center gap-3 text-sm">
+                        <span className="flex items-center gap-2 text-gray-600 font-semibold">
+                            <FontAwesomeIcon icon={order.paymentMethod === 'Card' ? faCreditCard : faMoneyBillWave} className="w-4" />
+                            {order.paymentMethod}
+                        </span>
+                        <span className={`text-xs font-semibold px-3 py-1 rounded-full ${order.isPaid ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                            {order.isPaid ? 'Paid' : 'Unpaid'}
+                        </span>
+                    </div>
+                )}
             </div>
 
             {/* Content */}
@@ -53,17 +58,21 @@ export default function OrderCard({ order }: OrderCardProps) {
                 <div className="lg:col-span-2">
                     <div className="flex items-center -space-x-3 overflow-hidden">
                         {order.items.slice(0, 3).map((item, index) => (
-                            <div 
-                                key={item.id} 
+                            <div
+                                key={item.id}
                                 className="relative w-16 h-16 rounded-xl border-2 border-white bg-gray-50 overflow-hidden shadow-sm"
                                 style={{ zIndex: 10 - index }}
+                                title={item.name}
                             >
-                                <Image 
-                                    src={item.image} 
-                                    alt={item.name}
-                                    fill
-                                    className="object-cover"
-                                />
+                                {item.image && (
+                                    <Image
+                                        src={item.image}
+                                        alt={item.name}
+                                        fill
+                                        sizes="64px"
+                                        className="object-contain"
+                                    />
+                                )}
                                 <div className="absolute top-0 right-0 bg-gray-900 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-bl-lg">
                                     {item.quantity}
                                 </div>
@@ -79,12 +88,12 @@ export default function OrderCard({ order }: OrderCardProps) {
 
                 <div className="space-y-1">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Items</p>
-                    <p className="text-sm font-bold text-gray-900">{order.items.length} items</p>
+                    <p className="text-sm font-bold text-gray-900">{totalItems} {totalItems === 1 ? 'item' : 'items'}</p>
                 </div>
 
                 <div className="space-y-1">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Total Amount</p>
-                    <p className="text-sm font-bold text-gray-900">${order.totalAmount.toFixed(2)}</p>
+                    <p className="text-sm font-bold text-gray-900">{order.totalAmount.toFixed(2)} EGP</p>
                 </div>
 
                 <div className="space-y-1">
@@ -94,33 +103,17 @@ export default function OrderCard({ order }: OrderCardProps) {
                     <p className="text-sm font-bold text-gray-900 truncate">{order.deliveredTo}</p>
                 </div>
 
-                <div className="md:col-span-4 lg:col-span-1 flex lg:flex-col gap-3">
-                    {order.status === 'Delivered' && (
-                        <>
-                            <button className="flex-1 bg-primary-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-700 transition-colors">
-                                Track Order
-                            </button>
-                            <button className="flex-1 bg-white border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-50 transition-colors">
-                                Write Review
-                            </button>
-                        </>
-                    )}
-                    {order.status === 'Processing' && (
-                        <>
-                            <button className="flex-1 bg-primary-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-700 transition-colors">
-                                Track Order
-                            </button>
-                            <button className="flex-1 bg-white border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-100 transition-colors">
-                                Cancel Order
-                            </button>
-                        </>
-                    )}
-                    {order.status === 'Cancelled' && (
-                        <button className="flex-1 bg-primary-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-700 transition-colors">
-                            Reorder All Items
-                        </button>
-                    )}
-                </div>
+                {firstProductId && (
+                    <div className="md:col-span-4 lg:col-span-1 flex lg:flex-col gap-3">
+                        <Link
+                            href={`/product/${firstProductId}`}
+                            className="flex-1 flex items-center justify-center gap-2 bg-primary-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-700 transition-colors"
+                        >
+                            <FontAwesomeIcon icon={faSync} className="w-3" />
+                            Buy Again
+                        </Link>
+                    </div>
+                )}
             </div>
         </div>
     );

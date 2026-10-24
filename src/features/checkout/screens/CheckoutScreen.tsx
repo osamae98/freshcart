@@ -2,7 +2,12 @@
 
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import { AppState } from '../../../store/store';
+import { useAppDispatch } from '../../../store/hooks';
+import { clearCart } from '../../cart/store/cart.slice';
+import { createCashOrder, createCheckoutSession } from '../../orders/server/orders.actions';
 import CheckoutStepper from '../components/CheckoutStepper';
 import PaymentMethod from '../components/PaymentMethod';
 import BillingAddress from '../components/BillingAddress';
@@ -86,18 +91,61 @@ export default function CheckoutScreen() {
         lastName: '',
         address: '',
         city: '',
-        zipCode: ''
+        zipCode: '',
+        phone: ''
     });
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleProceed = () => {
-        if (currentStep < 4) {
-            setCurrentStep(prev => prev + 1);
+    const handleProceed = async () => {
+        if (!cart || isPlacingOrder) return;
+
+        const { firstName, lastName, address, city, phone } = formData;
+        if (!firstName.trim() || !lastName.trim() || !address.trim() || !city.trim()) {
+            toast.error('Please fill in your name, address and city');
+            return;
         }
+        if (!/^01[0125][0-9]{8}$/.test(phone.trim())) {
+            toast.error('Please enter a valid Egyptian phone number');
+            return;
+        }
+
+        const shippingAddress = {
+            details: `${firstName.trim()} ${lastName.trim()}, ${address.trim()}`,
+            phone: phone.trim(),
+            city: city.trim(),
+        };
+
+        setIsPlacingOrder(true);
+        setCurrentStep(3);
+
+        if (paymentMethod === 'online') {
+            const result = await createCheckoutSession({ cartId: cart._id, shippingAddress, returnUrl: window.location.origin });
+            if (result.success) {
+                window.location.href = result.data.url;
+                return;
+            }
+            toast.error(result.message);
+        } else {
+            const result = await createCashOrder({ cartId: cart._id, shippingAddress });
+            if (result.success) {
+                setCurrentStep(4);
+                dispatch(clearCart());
+                toast.success('Order placed successfully');
+                router.push('/orders');
+                return;
+            }
+            toast.error(result.message);
+        }
+
+        setCurrentStep(2);
+        setIsPlacingOrder(false);
     };
 
     if (!cart) {
@@ -158,6 +206,8 @@ export default function CheckoutScreen() {
                             shipping={shipping}
                             tax={tax}
                             onProceed={handleProceed}
+                            isProcessing={isPlacingOrder}
+                            paymentMethod={paymentMethod}
                         />
                     </div>
                 </div>
