@@ -69,7 +69,8 @@ export default async function SearchResultsScreen({ searchParams }: SearchResult
     <div className="container py-8 sm:py-12">
       <SearchResultsHeader 
         totalResults={totalResults} 
-        keyword={searchParams.keyword || ""} 
+        keyword={searchParams.keyword || ""}
+        categoryName={categories.find((category) => category._id === searchParams.category)?.name}
       />
 
       <div className="flex flex-col lg:flex-row gap-8">

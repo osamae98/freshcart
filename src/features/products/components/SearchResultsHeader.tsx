@@ -9,9 +9,10 @@ import { useCallback } from "react";
 interface SearchResultsHeaderProps {
   totalResults: number;
   keyword: string;
+  categoryName?: string;
 }
 
-export default function SearchResultsHeader({ totalResults, keyword }: SearchResultsHeaderProps) {
+export default function SearchResultsHeader({ totalResults, keyword, categoryName }: SearchResultsHeaderProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -45,11 +46,18 @@ export default function SearchResultsHeader({ totalResults, keyword }: SearchRes
                                 <Link href="/" className="hover:text-primary-600">Home</Link>
                                 <span className="mx-2">›</span>
                             </li>
-                            <li className="text-gray-900 font-medium text-xs">Search Results</li>
+                            <li className="text-gray-900 font-medium text-xs">{categoryName || "Search Results"}</li>
                         </ol>
                     </nav>
                     <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                        Search Results for &quot;{keyword || "All Products"}&quot;
+                        {keyword ? (
+                            <>
+                                Search Results for &quot;{keyword}&quot;
+                                {categoryName && <> in {categoryName}</>}
+                            </>
+                        ) : (
+                            categoryName || "All Products"
+                        )}
                     </h1>
                     <p className="text-gray-500">We found <span className="font-bold text-gray-900">{totalResults}</span> products for you</p>
                 </div>

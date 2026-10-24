@@ -28,7 +28,7 @@ export default async function OurCategories() {
                     </h2>
                     <div className="flex-1"></div>
                     <Link 
-                         href={`categories`}
+                         href="/categories"
                          className="text-primary-600 hover:text-primary-700 font-medium flex items-center cursor-pointer">
                             View All Categories
                             <FontAwesomeIcon icon={faArrowRight} className="ml-2"/>
@@ -38,7 +38,7 @@ export default async function OurCategories() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                     {categories.map((category) => (
                         <Link 
-                           href={`/categories/${category._id}`}
+                           href={`/search?category=${category._id}`}
                            key={category._id}
                            className="bg-white rounded-lg p-4 text-center shadow-sm hover:shadow-md transition group cursor-pointer">
 <div className="h-20 w-20 overflow-hidden bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
