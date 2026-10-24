@@ -66,12 +66,12 @@ export default function SignupForm() {
         </div>
 
         <div className='register-options flex gap-2 *:grow my-10'>
-            <button className='btn bg-transparent border border-gray-300 hover:bg-gray-100 flex justify-between'>
-                <FontAwesomeIcon icon={faGoogle} className='text-red-600 me-2' />
+            <button className='btn bg-transparent border border-gray-300 hover:bg-gray-100 flex items-center justify-center gap-2'>
+                <FontAwesomeIcon icon={faGoogle} className='text-red-600' />
                 <span>Google</span>
             </button>
-            <button className='btn bg-transparent border border-gray-300 hover:bg-gray-100 flex justify-between'>
-                <FontAwesomeIcon icon={faFacebook} className='text-blue-600 me-2' />
+            <button className='btn bg-transparent border border-gray-300 hover:bg-gray-100 flex items-center justify-center gap-2'>
+                <FontAwesomeIcon icon={faFacebook} className='text-blue-600' />
                 <span>Facebook</span>
             </button>
         </div>
