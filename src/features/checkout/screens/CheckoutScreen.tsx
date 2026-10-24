@@ -28,8 +28,8 @@ const mockRecommendations: Product[] = [
         subcategory: [],
         category: { _id: '1', name: 'Fruits & Vegetables', slug: 'fruits', image: '' },
         brand: { _id: '1', name: 'Fresh', slug: 'fresh', image: '' },
-        ratingAverage: 4.8,
-        ratingQuantity: 120,
+        ratingsAverage: 4.8,
+        ratingsQuantity: 120,
         createdAt: '',
         updatedAt: ''
     },
@@ -48,8 +48,8 @@ const mockRecommendations: Product[] = [
         subcategory: [],
         category: { _id: '1', name: 'Fruits & Vegetables', slug: 'fruits', image: '' },
         brand: { _id: '1', name: 'Fresh', slug: 'fresh', image: '' },
-        ratingAverage: 4.5,
-        ratingQuantity: 95,
+        ratingsAverage: 4.5,
+        ratingsQuantity: 95,
         createdAt: '',
         updatedAt: ''
     },
@@ -68,8 +68,8 @@ const mockRecommendations: Product[] = [
         subcategory: [],
         category: { _id: '2', name: 'Dairy & Eggs', slug: 'dairy', image: '' },
         brand: { _id: '2', name: 'Fresh', slug: 'fresh', image: '' },
-        ratingAverage: 4.9,
-        ratingQuantity: 150,
+        ratingsAverage: 4.9,
+        ratingsQuantity: 150,
         createdAt: '',
         updatedAt: ''
     }

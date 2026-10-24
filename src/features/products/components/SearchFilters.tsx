@@ -17,8 +17,8 @@ export default function SearchFilters({ categories, brands }: SearchFiltersProps
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "5");
-  const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "75");
+  const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
+  const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -28,6 +28,8 @@ export default function SearchFilters({ categories, brands }: SearchFiltersProps
       } else {
         params.delete(name);
       }
+      // A new filter changes the result set, so start from the first page
+      params.delete("page");
       return params.toString();
     },
     [searchParams]
@@ -39,8 +41,11 @@ export default function SearchFilters({ categories, brands }: SearchFiltersProps
 
   const handleApplyPrice = () => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("minPrice", minPrice);
-    params.set("maxPrice", maxPrice);
+    if (minPrice) params.set("minPrice", minPrice);
+    else params.delete("minPrice");
+    if (maxPrice) params.set("maxPrice", maxPrice);
+    else params.delete("maxPrice");
+    params.delete("page");
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -97,9 +102,10 @@ export default function SearchFilters({ categories, brands }: SearchFiltersProps
         </div>
         <input 
             type="range" 
-            min="0" 
-            max="1000" 
-            value={maxPrice}
+            min="0"
+            max="50000"
+            step="100"
+            value={maxPrice || 50000}
             onChange={(e) => setMaxPrice(e.target.value)}
             className="w-full mt-4 accent-primary-600"
         />

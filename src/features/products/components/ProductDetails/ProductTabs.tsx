@@ -12,7 +12,7 @@ interface ProductTabsProps {
 export default function ProductTabs({ product }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState('Product Details');
 
-  const tabs = ['Product Details', 'Nutrition Facts', `Reviews (${product.ratingQuantity})`, 'Shipping & Returns'];
+  const tabs = ['Product Details', 'Nutrition Facts', `Reviews (${product.ratingsQuantity})`, 'Shipping & Returns'];
 
   return (
     <div className="mt-12">

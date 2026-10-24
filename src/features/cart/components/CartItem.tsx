@@ -38,9 +38,9 @@ export default function CartItem({ item, onUpdateQuantity, onRemove }: CartItemP
                 </h3>
                 <p className="text-sm text-gray-500 mb-2">{product.category?.name || 'Uncategorized'}</p>
                 <div className="flex items-center justify-center sm:justify-start gap-2">
-                    <Ratings rating={product.ratingAverage || 0} />
+                    <Ratings rating={product.ratingsAverage || 0} />
                     <span className="text-xs text-gray-400">
-                        {product.ratingAverage || 0} ({product.ratingQuantity || 0})
+                        {product.ratingsAverage || 0} ({product.ratingsQuantity || 0})
                     </span>
                 </div>
             </div>

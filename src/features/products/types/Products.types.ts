@@ -34,8 +34,8 @@ export interface Product {
     subcategory: Subcategory[];
     category: ProductCategory;
     brand: Brand;
-    ratingAverage: number;
-    ratingQuantity: number;
+    ratingsAverage: number;
+    ratingsQuantity: number;
     createdAt: string;
     updatedAt: string;
 }
@@ -49,7 +49,7 @@ export interface ProductsMetaData {
 
 export interface ProductsResponse {
     results: number;
-    metaData: ProductsMetaData;
+    metadata: ProductsMetaData;
     data: Product[];
 }
 

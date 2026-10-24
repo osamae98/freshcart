@@ -22,8 +22,8 @@ export default function ProductCard({info}: {info:Product}){
         category,
         title,
         imageCover,
-        ratingAverage,
-        ratingQuantity,
+        ratingsAverage,
+        ratingsQuantity,
         price,
         priceAfterDiscount,
         _id
@@ -60,13 +60,15 @@ export default function ProductCard({info}: {info:Product}){
        className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition"
        >
         <div className="relative">
-            <Image 
-               className="w-full h-60 object-contain bg-white"
-               src={imageCover}
-               alt={title}
-               width={300}
-               height={240}
-               />
+            <Link href={`/product/${_id}`}>
+                <Image
+                   className="w-full h-60 object-contain bg-white"
+                   src={imageCover}
+                   alt={title}
+                   width={300}
+                   height={240}
+                   />
+            </Link>
             <div className="absolute top-3 left-3">
                 {onSale && (
                     <span className="bg-red-500 text-white text-xs px-2 py-1 rounded">
@@ -111,10 +113,10 @@ export default function ProductCard({info}: {info:Product}){
             <div className="flex items-center">
                 <div className="flex text-amber-400 mr-2">
                     {/*RATINGS*/}
-                    <Ratings rating={ratingAverage} />
+                    <Ratings rating={ratingsAverage} />
                 </div>
                 <span className="text-xs text-gray-500">
-                    {ratingAverage} ({ratingQuantity} reviews)
+                    {ratingsAverage} ({ratingsQuantity} reviews)
                 </span>
             </div>
             <div className="flex items-center justify-between">

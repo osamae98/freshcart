@@ -46,9 +46,9 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           </span>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.title}</h1>
           <div className="flex items-center gap-3">
-            <Ratings rating={product.ratingAverage} />
+            <Ratings rating={product.ratingsAverage} />
             <span className="text-sm text-gray-500">
-              {product.ratingAverage} ({product.ratingQuantity} reviews)
+              {product.ratingsAverage} ({product.ratingsQuantity} reviews)
             </span>
           </div>
         </div>

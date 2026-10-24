@@ -102,8 +102,8 @@ export default function Navbar() {
                     <form 
                         onSubmit={(e) => {
                             e.preventDefault();
-                            const value = (e.currentTarget.elements.namedItem("search") as HTMLInputElement).value;
-                            if (value) router.push(`/search?keyword=${value}`);
+                            const value = (e.currentTarget.elements.namedItem("search") as HTMLInputElement).value.trim();
+                            if (value) router.push(`/search?keyword=${encodeURIComponent(value)}`);
                         }}
                         className="hidden lg:flex flex-1 max-w-lg relative"
                     >
@@ -234,9 +234,9 @@ export default function Navbar() {
                     <form 
                         onSubmit={(e) => {
                             e.preventDefault();
-                            const value = (e.currentTarget.elements.namedItem("search-mobile") as HTMLInputElement).value;
+                            const value = (e.currentTarget.elements.namedItem("search-mobile") as HTMLInputElement).value.trim();
                             if (value) {
-                                router.push(`/search?keyword=${value}`);
+                                router.push(`/search?keyword=${encodeURIComponent(value)}`);
                                 setIsMenuOpen(false);
                             }
                         }}

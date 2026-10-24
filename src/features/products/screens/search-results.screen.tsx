@@ -32,8 +32,19 @@ export default async function SearchResultsScreen({ searchParams }: SearchResult
     sort: searchParams.sort,
     minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
     maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
+    rating: searchParams.rating ? Number(searchParams.rating) : undefined,
     page: searchParams.page ? Number(searchParams.page) : 1,
     limit: 12,
+  };
+
+  // Keep the active search and filters when changing pages
+  const pageHref = (page: number) => {
+    const query = new URLSearchParams();
+    Object.entries(searchParams).forEach(([key, value]) => {
+      if (value && key !== "page") query.set(key, value);
+    });
+    query.set("page", page.toString());
+    return `?${query.toString()}`;
   };
 
   const [productsResult, categoriesResult, brandsResult, allProductsResult] = await Promise.allSettled([
@@ -49,8 +60,8 @@ export default async function SearchResultsScreen({ searchParams }: SearchResult
   const recentlyViewedProducts = allProductsResult.status === 'fulfilled' ? allProductsResult.value.data : [];
 
   const totalResults = productsResult.status === 'fulfilled' ? productsResult.value.results || 0 : 0;
-  const currentPage = productsResult.status === 'fulfilled' ? productsResult.value.metaData?.currentPage || 1 : 1;
-  const totalPages = productsResult.status === 'fulfilled' ? productsResult.value.metaData?.numberOfPages || 1 : 1;
+  const currentPage = productsResult.status === 'fulfilled' ? productsResult.value.metadata?.currentPage || 1 : 1;
+  const totalPages = productsResult.status === 'fulfilled' ? productsResult.value.metadata?.numberOfPages || 1 : 1;
 
   const isGrid = searchParams.view !== "list";
 
@@ -119,7 +130,7 @@ export default async function SearchResultsScreen({ searchParams }: SearchResult
                 <div className="mt-12 flex justify-center">
                   <nav className="flex items-center gap-2">
                     <Link
-                      href={`?page=${Math.max(1, currentPage - 1)}`}
+                      href={pageHref(Math.max(1, currentPage - 1))}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:border-primary-500 hover:text-primary-500 transition ${currentPage === 1 ? 'pointer-events-none opacity-50' : ''}`}
                     >
                       <FontAwesomeIcon icon={faChevronLeft} size="sm" />
@@ -127,7 +138,7 @@ export default async function SearchResultsScreen({ searchParams }: SearchResult
                     {[...Array(totalPages)].map((_, i) => (
                       <Link
                         key={i + 1}
-                        href={`?page=${i + 1}`}
+                        href={pageHref(i + 1)}
                         className={`w-10 h-10 flex items-center justify-center rounded-lg border font-bold transition ${
                           currentPage === i + 1
                             ? "bg-primary-600 border-primary-600 text-white"
@@ -138,7 +149,7 @@ export default async function SearchResultsScreen({ searchParams }: SearchResult
                       </Link>
                     ))}
                     <Link
-                      href={`?page=${Math.min(totalPages, currentPage + 1)}`}
+                      href={pageHref(Math.min(totalPages, currentPage + 1))}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:border-primary-500 hover:text-primary-500 transition ${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}`}
                     >
                       <FontAwesomeIcon icon={faChevronRight} size="sm" />

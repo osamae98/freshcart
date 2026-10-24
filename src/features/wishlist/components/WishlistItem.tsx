@@ -59,9 +59,9 @@ export default function WishlistItem({ item, onRemove }: WishlistItemProps) {
                     </h3>
                 </Link>
                 <div className="flex items-center justify-center sm:justify-start gap-2">
-                    <Ratings rating={item.ratingAverage || 0} />
+                    <Ratings rating={item.ratingsAverage || 0} />
                     <span className="text-xs text-gray-400">
-                        {item.ratingAverage || 0} ({item.ratingQuantity || 0})
+                        {item.ratingsAverage || 0} ({item.ratingsQuantity || 0})
                     </span>
                 </div>
             </div>
