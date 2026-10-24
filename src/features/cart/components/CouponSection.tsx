@@ -6,7 +6,8 @@ import { faTag } from "@fortawesome/free-solid-svg-icons";
 
 export default function CouponSection() {
     const [coupon, setCoupon] = useState('');
-    const [appliedCoupon, setAppliedCoupon] = useState('FRESH20');
+    // Nothing is applied until a real coupon is validated
+    const [appliedCoupon, setAppliedCoupon] = useState('');
 
     return (
         <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">

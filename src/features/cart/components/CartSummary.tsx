@@ -26,7 +26,7 @@ export default function CartSummary({ subtotal, shipping, discount, tax }: CartS
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="text-gray-500">Shipping</span>
-                        <span className="font-bold text-green-500">{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                        <span className={`font-bold ${shipping === 0 ? 'text-green-500' : 'text-gray-900'}`}>{shipping === 0 ? 'Free' : `${shipping.toFixed(2)} EGP`}</span>
                     </div>
                     {discount > 0 && (
                         <div className="flex justify-between items-center">
@@ -34,10 +34,12 @@ export default function CartSummary({ subtotal, shipping, discount, tax }: CartS
                             <span className="font-bold text-red-500">-{discount.toFixed(2)} EGP</span>
                         </div>
                     )}
-                    <div className="flex justify-between items-center">
-                        <span className="text-gray-500">Tax</span>
-                        <span className="font-bold text-gray-900">{tax.toFixed(2)} EGP</span>
-                    </div>
+                    {tax > 0 && (
+                        <div className="flex justify-between items-center">
+                            <span className="text-gray-500">Tax</span>
+                            <span className="font-bold text-gray-900">{tax.toFixed(2)} EGP</span>
+                        </div>
+                    )}
                     
                     <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
                         <span className="text-lg font-bold text-gray-900">Total</span>
@@ -54,7 +56,7 @@ export default function CartSummary({ subtotal, shipping, discount, tax }: CartS
                         <FontAwesomeIcon icon={faArrowRight} size="sm" />
                     </Link>
                     <Link 
-                        href="/products"
+                        href="/featured"
                         className="w-full bg-white border-2 border-gray-100 hover:border-gray-200 text-gray-900 font-bold py-4 rounded-xl transition-all flex items-center justify-center active:scale-[0.98]"
                     >
                         Continue Shopping

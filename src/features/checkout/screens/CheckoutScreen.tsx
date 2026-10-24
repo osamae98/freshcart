@@ -157,11 +157,11 @@ export default function CheckoutScreen() {
         );
     }
 
-    // Mock calculations
+    // The API charges only the cart total (no tax, shipping or discount), so mirror that here
     const subtotal = cart.totalCartPrice;
-    const discount = 2.46; // Mock discount
-    const shipping = 4.99; // Mock shipping
-    const tax = 0.98; // Mock tax
+    const discount = 0;
+    const shipping = 0;
+    const tax = 0;
 
     return (
         <section className="py-12 bg-gray-50/30 min-h-screen">

@@ -63,18 +63,22 @@ export default function OrderSummary({
                         <span className="text-gray-500">Subtotal</span>
                         <span className="font-bold text-gray-900">{subtotal.toFixed(2)} EGP</span>
                     </div>
-                    <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-500">Discount</span>
-                        <span className="font-bold text-red-500">-{discount.toFixed(2)} EGP</span>
-                    </div>
+                    {discount > 0 && (
+                        <div className="flex justify-between items-center text-sm">
+                            <span className="text-gray-500">Discount</span>
+                            <span className="font-bold text-red-500">-{discount.toFixed(2)} EGP</span>
+                        </div>
+                    )}
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500">Delivery</span>
-                        <span className="font-bold text-gray-900">{shipping.toFixed(2)} EGP</span>
+                        <span className={`font-bold ${shipping === 0 ? 'text-green-500' : 'text-gray-900'}`}>{shipping === 0 ? 'Free' : `${shipping.toFixed(2)} EGP`}</span>
                     </div>
-                    <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-500">Tax</span>
-                        <span className="font-bold text-gray-900">{tax.toFixed(2)} EGP</span>
-                    </div>
+                    {tax > 0 && (
+                        <div className="flex justify-between items-center text-sm">
+                            <span className="text-gray-500">Tax</span>
+                            <span className="font-bold text-gray-900">{tax.toFixed(2)} EGP</span>
+                        </div>
+                    )}
                     
                     <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
                         <span className="text-lg font-bold text-gray-900">Total</span>

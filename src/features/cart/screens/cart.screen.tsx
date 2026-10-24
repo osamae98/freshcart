@@ -93,9 +93,10 @@ export default function CartScreen({ relatedProducts }: CartScreenProps) {
                     <div className="sticky top-24">
                         <CartSummary 
                             subtotal={cart.totalCartPrice}
-                            shipping={0} // Example: Free shipping
-                            discount={3.25} // Example: Mock discount for FRESH20
-                            tax={1.04} // Example: Mock tax
+                            // The API charges only the cart total (no tax, shipping or discount)
+                            shipping={0}
+                            discount={0}
+                            tax={0}
                         />
                     </div>
                 </div>
